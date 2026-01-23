@@ -1,6 +1,11 @@
 # YVA - YAML Validator App
 
-A client-side WebAssembly application for validating YAML using `serde-saphyr` and the Dioxus framework.
+Yva (Yaml VAlidator) is a client-side WebAssembly application for validating YAML using `serde-saphyr` and the Dioxus framework. It validates user YAML inside browser, without sending it to the server. 
+
+Yva is available on [https://verdanta.tech/yva/](https://verdanta.tech/yva/). It is used primarily to 
+- To estimate budget limits for your YAML.
+- To check if your YAML will be parsed by serde-saphyr.
+- We also use it to verify and demonstrate serde-saphyr is compatibility with WebAssembly frameworks
 
 ## Prerequisites
 
