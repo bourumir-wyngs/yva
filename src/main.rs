@@ -1,7 +1,7 @@
 use dioxus::document::eval;
 use dioxus::prelude::*;
 use serde::de::IgnoredAny;
-use serde_saphyr::{from_str_with_options, Options};
+use serde_saphyr::{from_multiple_with_options, from_str_with_options, Options};
 use serde_saphyr::budget::BudgetReport;
 
 fn main() {
@@ -54,7 +54,8 @@ fn App() -> Element {
                         });
 
                         let content = input_text.read();
-                        let result: Result<IgnoredAny, _> = from_str_with_options(&content, options);
+                        // We can validate multiple documents
+                        let result: Result<Vec<IgnoredAny>, _> = from_multiple_with_options(&content, options);
                         
                         let mut final_output = String::new();
                         match result {

@@ -36,6 +36,35 @@ trunk build --release
 
 The output will be in the `dist` directory, which can be hosted on any static file server.
 
+### Deploying to a Non-Root Path
+
+If you need to deploy the application to a subdirectory (e.g., `https://example.com/yva/` instead of `https://example.com/`), you have two options:
+
+**Option 1: Configure in Trunk.toml**
+
+Edit `Trunk.toml` and set the `public_url`:
+
+```toml
+[build]
+public_url = "/yva/"
+```
+
+Then build normally:
+
+```bash
+trunk build --release
+```
+
+**Option 2: Use Command-Line Flag**
+
+Build with the `--public-url` flag:
+
+```bash
+trunk build --release --public-url /yva/
+```
+
+**Important**: The public URL must start and end with a forward slash (e.g., `/yva/`, not `yva` or `/yva`).
+
 ## Features
 
 - **Split-screen UI**: Input on the left, output on the right.

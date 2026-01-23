@@ -8,6 +8,7 @@
         import { EditorView, basicSetup } from "https://esm.sh/codemirror";
         import { yaml } from "https://esm.sh/@codemirror/lang-yaml";
         import { EditorState } from "https://esm.sh/@codemirror/state";
+        import { placeholder } from "https://esm.sh/@codemirror/view";
 
         window.initCodeMirror = function(parent, initialValue, onUpdate) {
             let startState = EditorState.create({
@@ -15,6 +16,7 @@
                 extensions: [
                     basicSetup,
                     yaml(),
+                    placeholder("# Paste yaml here:\na: 1\nb: [ 1, 2, 3]\n[x, y]: z"),
                     EditorView.updateListener.of((update) => {
                         if (update.docChanged) {
                             onUpdate(update.state.doc.toString());
@@ -23,6 +25,14 @@
                     EditorView.theme({
                         "&": { height: "100%" },
                         ".cm-scroller": { overflow: "auto" }
+                    }),
+                    EditorView.contentAttributes.of({
+                        spellcheck: "false",
+                        autocorrect: "off",
+                        autocapitalize: "off",
+                        "data-gramm": "false",
+                        "data-gramm_editor": "false",
+                        "data-enable-grammarly": "false"
                     })
                 ]
             });

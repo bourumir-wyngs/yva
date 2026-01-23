@@ -9,5 +9,4 @@ serde = { version = "1.0", features = ["derive"] }
 serde-saphyr = { git = "https://github.com/bourumir-wyngs/serde-saphyr.git", features = ["miette"] }
 miette = { version = "7.6", features = ["fancy-no-syscall"] }
 ansi-to-html = "0.2.1"
-htmlescape = "0.3"
 serde_json = "1.0"

@@ -1,0 +1,8 @@
+[build]
+# Public URL path for deployment
+# Change this to match your deployment path, e.g., "/yva/" for deploying to example.com/yva/
+# Use "/" for root deployment (default)
+public_url = "/yva"
+
+# Optionally, you can override this at build time with:
+# trunk build --release --public-url /your-path/
