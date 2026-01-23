@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YVA - YAML Validator</title>
+    <script type="module">
+        import { EditorView, basicSetup } from "https://esm.sh/codemirror";
+        import { yaml } from "https://esm.sh/@codemirror/lang-yaml";
+        import { EditorState } from "https://esm.sh/@codemirror/state";
+
+        window.initCodeMirror = function(parent, initialValue, onUpdate) {
+            let startState = EditorState.create({
+                doc: initialValue,
+                extensions: [
+                    basicSetup,
+                    yaml(),
+                    EditorView.updateListener.of((update) => {
+                        if (update.docChanged) {
+                            onUpdate(update.state.doc.toString());
+                        }
+                    }),
+                    EditorView.theme({
+                        "&": { height: "100%" },
+                        ".cm-scroller": { overflow: "auto" }
+                    })
+                ]
+            });
+
+            return new EditorView({
+                state: startState,
+                parent: parent
+            });
+        };
+    </script>
+</head>
+<body>
+    <div id="main"></div>
+</body>
+</html>
