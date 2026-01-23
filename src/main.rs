@@ -1,28 +1,18 @@
-use dioxus::prelude::*;
 use dioxus::document::eval;
+use dioxus::prelude::*;
 use serde::de::IgnoredAny;
 use serde_saphyr::{from_str_with_options, Options};
-use std::cell::RefCell;
-
-thread_local! {
-    static BUDGET_REPORT: RefCell<Option<serde_saphyr::budget::BudgetReport>> = RefCell::new(None);
-}
+use serde_saphyr::budget::BudgetReport;
 
 fn main() {
     dioxus::launch(App);
-}
-
-fn report_budget(report: &serde_saphyr::budget::BudgetReport) {
-    BUDGET_REPORT.with(|r| {
-        *r.borrow_mut() = Some(report.clone());
-    });
 }
 
 #[component]
 fn App() -> Element {
     let mut input_text = use_signal(|| "".to_string());
     let mut output_text = use_signal(|| "".to_string());
-    let mut budget_report = use_signal(|| None::<serde_saphyr::budget::BudgetReport>);
+    let mut budget_report_signal = use_signal(|| None::<serde_saphyr::budget::BudgetReport>);
 
     use_effect(move || {
         spawn(async move {
@@ -53,32 +43,26 @@ fn App() -> Element {
                 style: "padding: 10px; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center;",
                 button {
                     onclick: move |_| {
-                        let content = input_text.read().clone();
-                        
-                        BUDGET_REPORT.with(|r| {
-                            *r.borrow_mut() = None;
-                        });
-
                         let options = Options {
-                            budget_report: Some(report_budget),
                             with_snippet: false, // Using miette for snippets
                             ..Options::default()
-                        };
+                        }.with_budget_report({
+                            let mut signal = budget_report_signal;
+                            move |report: BudgetReport| {
+                                signal.set(Some(report));
+                            }
+                        });
 
+                        let content = input_text.read();
                         let result: Result<IgnoredAny, _> = from_str_with_options(&content, options);
                         
                         let mut final_output = String::new();
-                        let mut is_error = false;
                         match result {
                             Ok(_) => {
-                                final_output.push_str("YAML is valid!");
-                                BUDGET_REPORT.with(|r| {
-                                    budget_report.set(r.borrow().clone());
-                                });
+                                final_output.push_str("YAML is valid");
                             }
                             Err(err) => {
-                                is_error = true;
-                                budget_report.set(None);
+                                budget_report_signal.set(None);
                                 let report = serde_saphyr::miette::to_miette_report(&err, &content, "input.yaml");
                                 
                                 let mut ansi_output = String::new();
@@ -90,11 +74,7 @@ fn App() -> Element {
                                 final_output = converter.convert(&ansi_output).unwrap_or_else(|_| ansi_output);
                             }
                         }
-                        if is_error {
-                            output_text.set(final_output);
-                        } else {
-                            output_text.set(final_output);
-                        }
+                        output_text.set(final_output);
                     },
                     "Validate"
                 }
@@ -111,7 +91,7 @@ fn App() -> Element {
                 }
                 div {
                     style: "flex: 1; padding: 10px; margin: 0; overflow: auto; background-color: #ffffff; color: #000000; font-family: monospace;",
-                    if let Some(report) = budget_report() {
+                    if let Some(report) = budget_report_signal() {
                         div {
                             p { style: "font-weight: bold; color: green;", "{output_text}" }
                             h3 { "Budget Report" }
