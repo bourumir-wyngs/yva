@@ -1,7 +1,7 @@
 use dioxus::document::eval;
 use dioxus::prelude::*;
 use serde::de::IgnoredAny;
-use serde_saphyr::{from_multiple_with_options, from_str_with_options, Options};
+use serde_saphyr::{from_multiple_with_options, Options};
 use serde_saphyr::budget::BudgetReport;
 
 fn main() {

@@ -5,7 +5,7 @@ Yva (Yaml VAlidator) is a client-side WebAssembly application for validating YAM
 Yva is available on [https://verdanta.tech/yva/](https://verdanta.tech/yva/). It is used primarily to 
 - To estimate budget limits for your YAML.
 - To check if your YAML will be parsed by serde-saphyr.
-- We also use it to verify and demonstrate serde-saphyr is compatibility with WebAssembly frameworks
+- We also use it to verify and demonstrate serde-saphyr compatibility with WebAssembly frameworks. Notably, budget reporting API was re-designed while checking how easy it is to call from Dioxus.
 
 <p>
     <a href="https://verdanta.tech"><img src="https://verdanta.tech/verdanta_logo_small.jpg"
