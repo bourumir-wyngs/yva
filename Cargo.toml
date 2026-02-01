@@ -6,7 +6,8 @@ edition = "2021"
 [dependencies]
 dioxus = { version = "0.6", features = ["web"] }
 serde = { version = "1.0", features = ["derive"] }
-serde-saphyr = { git = "https://github.com/bourumir-wyngs/serde-saphyr.git", features = ["miette"] }
+serde-saphyr = { version = "0.0.17", features = ["miette"] }
+#serde-saphyr = { git = "https://github.com/bourumir-wyngs/serde-saphyr.git", features = ["miette"] }
 miette = { version = "7.6", features = ["fancy-no-syscall"] }
 ansi-to-html = "0.2.1"
 serde_json = "1.0"
